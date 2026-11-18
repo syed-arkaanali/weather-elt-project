@@ -1,0 +1,20 @@
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Data (We don't push the CSVs, they can be regenerated)
+data/raw/*.csv
+data/processed/*.csv
+
+# Windows system files
+.DS_Store
+Thumbs.db
