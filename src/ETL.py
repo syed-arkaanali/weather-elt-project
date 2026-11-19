@@ -48,7 +48,7 @@ def process_weather_data(file_name: str, output_name: str):
     print(f"Saved processed data to {output_path}, shape={df.shape}\n")
     return df
 
-def prepare_for_lstm(file_name: str, city_name: str ,seq_length=48, forecast_horizon=120):
+def prepare_for_lstm(file_name: str ,seq_length=48):
 
     input_path = os.path.join(PROCESSED_DIR, file_name)
     df = pd.read_csv(input_path)
@@ -59,15 +59,15 @@ def prepare_for_lstm(file_name: str, city_name: str ,seq_length=48, forecast_hor
     scaler = MinMaxScaler()
     scaled_data = scaler.fit_transform(df[features])
 
-    scaler_path = os.path.join(MODELS_DIR, f"scaler_{city_name}.pkl")
+    scaler_path = os.path.join(MODELS_DIR, f"scaler.pkl")
     joblib.dump(scaler, scaler_path)
     print(f"Scaler saved to: {scaler_path}")
 
     target_idx = features.index(target_col)
     X, y = [], []
 
-    for i in range(len(scaled_data) - seq_length - forecast_horizon):
+    for i in range(len(scaled_data) - seq_length):
         X.append(scaled_data[i : i + seq_length])
-        y.append(scaled_data[i + seq_length + forecast_horizon, target_idx])
+        y.append(scaled_data[i + seq_length, target_idx])
 
     return np.array(X), np.array(y)
